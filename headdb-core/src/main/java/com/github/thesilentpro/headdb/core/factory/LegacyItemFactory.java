@@ -50,6 +50,7 @@ public class LegacyItemFactory implements ItemFactory {
         String cost = String.valueOf(plugin.getCfg().getHeadOrCategoryPrice(head.getId(), head.getCategory().toLowerCase(Locale.ROOT)));
         Component name = plugin.getCfg().getHeadName().replaceText(builder -> builder.matchLiteral("{name}").replacement(head.getName())).replaceText(builder -> builder.matchLiteral("{cost}").replacement(cost));
         meta.setItemName(ChatColor.translateAlternateColorCodes('&', LegacyComponentSerializer.legacyAmpersand().serialize(name)));
+        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', LegacyComponentSerializer.legacyAmpersand().serialize(name)));
 
         List<Component> lore = new ArrayList<>(plugin.getCfg().getHeadsLore());
         lore.replaceAll(component -> component.replaceText(builder -> builder.matchLiteral("{id}").replacement(String.valueOf(head.getId())))
@@ -98,6 +99,7 @@ public class LegacyItemFactory implements ItemFactory {
     public ItemStack setItemDetails(ItemStack item, Component name, Component... lore) {
         ItemMeta meta = item.getItemMeta();
         meta.setItemName(name != null ? ChatColor.translateAlternateColorCodes('&', LegacyComponentSerializer.legacyAmpersand().serialize(name)) : null);
+        meta.setDisplayName(name != null ? ChatColor.translateAlternateColorCodes('&', LegacyComponentSerializer.legacyAmpersand().serialize(name)) : null);
         meta.setLore(
                 lore != null
                 ? Arrays.stream(lore).map(component -> ChatColor.translateAlternateColorCodes('&', LegacyComponentSerializer.legacyAmpersand().serialize(component))).toList()

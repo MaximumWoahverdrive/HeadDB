@@ -4,6 +4,7 @@ import com.destroystokyo.paper.profile.PlayerProfile;
 import com.github.thesilentpro.headdb.api.model.Head;
 import com.github.thesilentpro.headdb.core.HeadDB;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -45,7 +46,9 @@ public class PaperItemFactory implements ItemFactory {
         }
 
         String cost = String.valueOf(plugin.getCfg().getHeadOrCategoryPrice(head.getId(), head.getCategory().toLowerCase(Locale.ROOT)));
-        meta.itemName(plugin.getCfg().getHeadName().replaceText(builder -> builder.matchLiteral("{name}").replacement(head.getName())).replaceText(builder -> builder.matchLiteral("{cost}").replacement(cost)));
+        Component name = plugin.getCfg().getHeadName().replaceText(builder -> builder.matchLiteral("{name}").replacement(head.getName())).replaceText(builder -> builder.matchLiteral("{cost}").replacement(cost));
+        meta.itemName(name);
+        meta.displayName(name.decoration(TextDecoration.ITALIC, false));
 
         List<Component> lore = new ArrayList<>(plugin.getCfg().getHeadsLore());
         lore.replaceAll(component -> component.replaceText(builder -> builder.matchLiteral("{id}").replacement(String.valueOf(head.getId())))
@@ -93,6 +96,7 @@ public class PaperItemFactory implements ItemFactory {
     public ItemStack setItemDetails(ItemStack item, Component name, Component... lore) {
         ItemMeta meta = item.getItemMeta();
         meta.itemName(name);
+        meta.customName(name.decoration(TextDecoration.ITALIC, false));
         meta.lore(lore != null ? Arrays.asList(lore) : null);
         item.setItemMeta(meta);
         return item;
